@@ -2565,13 +2565,19 @@ function drawAttachments(ctx, sX, silencerIdOverride = null, weaponType = 'glock
             ctx.beginPath(); ctx.ellipse(rX+38, -32.5, 2, 4, 0, 0, Math.PI*2); ctx.fill();
         } else {
             ctx.fillStyle = '#111'; ctx.fillRect(rX, -18, 20, 4); ctx.beginPath(); ctx.moveTo(rX, -18); ctx.lineTo(rX, -28); ctx.lineTo(rX+20, -28); ctx.lineTo(rX+20, -18); ctx.fill(); ctx.fillStyle = 'rgba(0,255,255,0.2)'; ctx.fillRect(rX+2, -26, 16, 8); ctx.fillStyle = 'red'; ctx.fillRect(rX+9, -23, 2, 2); 
-        }
-    }
+// ... drawAttachments fonksiyonunun son kısmı ...
     const showLaser = isPreview || GUN.attachments.laser;
-    if(showLaser && GUN.attachments.laser) { ctx.fillStyle = '#111'; ctx.fillRect(laserX, laserY, 25, 8); ctx.fillStyle = '#eab308'; ctx.fillRect(laserX + 22, laserY + 2, 2, 4); }
-}
+    if(showLaser && GUN.attachments.laser) { 
+        ctx.fillStyle = '#111'; 
+        ctx.fillRect(laserX, laserY, 25, 8); 
+        ctx.fillStyle = '#eab308'; 
+        ctx.fillRect(laserX + 22, laserY + 2, 2, 4); 
+    }
+} // <--- BU PARANTEZ ÇOK ÖNEMLİ (drawAttachments'ı kapatıyor)
 
-ffunction resize() {
+// --- BURADAN SONRASI YENİ RESIZE FONKSİYONU ---
+
+function resize() {
     // Ekranın tam genişlik ve yüksekliğini al
     width = canvas.width = window.innerWidth;
     height = canvas.height = window.innerHeight;
@@ -2587,12 +2593,14 @@ ffunction resize() {
     // Tıklama algılaması için konteyner sınırlarını güncelle
     containerRect = gameContainer.getBoundingClientRect();
     
-    // Eğer oyun oynanıyorsa seviyeyi yeniden render et (kayma olmaması için)
+    // Eğer oyun oynanıyorsa seviyeyi yeniden render et
     if(GAME.state === 'playing') {
-        // Blokları veya hedefleri ekran boyutuna göre güncellemek gerekebilir
-        // Ancak şimdilik sadece görseli düzeltiyoruz.
+        // Gerekirse buraya ek güncelleme kodları gelebilir
     }
 }
+
+// renderPreviews fonksiyonu resize'dan sonra geliyorsa ona dokunma.
+// Eğer resize fonksiyonu dosyanın en sonundaysa bu kod çalışacaktır.
 
 function renderPreviews() {
     const previews = document.querySelectorAll('.preview-canvas');
@@ -2693,4 +2701,5 @@ function renderPreviews() {
         } else if (weaponId) {
             if(weaponId === 'mpt55') ctx.scale(0.8, 0.8); else ctx.scale(1.2, 1.2);
             if(weaponId === 'glock') drawDetailedGlock(ctx, 0, 0, 0, 0);
+
             else if(weaponId ===
